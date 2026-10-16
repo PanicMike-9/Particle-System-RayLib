@@ -1,19 +1,10 @@
 #include "particle.hpp"
 
-constexpr int WIN_WIDTH  {1280};
-constexpr int WIN_HEIGHT {720};
+constexpr int WIN_WIDTH  {1920};
+constexpr int WIN_HEIGHT {1080};
 
 constexpr float WIN_CENTER_W {static_cast<float>(WIN_WIDTH)  * 0.5f};
 constexpr float WIN_CENTER_H {static_cast<float>(WIN_HEIGHT) * 0.5f};
-
-// constexpr int FPS {60};
-
-#if 0
-// move the entire update into a single function, later
-void update()
-{
-}
-#endif
 
 int main()
 {
@@ -71,7 +62,7 @@ int main()
 
         draw_particles(&circ_buff);
 
-        DrawText(TextFormat("Particles per frame: %d", emission_rate + 1), 0, 0, 20, WHITE);
+        DrawText(TextFormat("Particles per frame: %d", emission_rate + 1), 0, 0, 20, RED);
 
         DrawFPS(WIN_WIDTH - 80, 10);
 

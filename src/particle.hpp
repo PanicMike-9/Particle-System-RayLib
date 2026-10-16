@@ -71,7 +71,8 @@ struct CircularBuffer
 
         // update position and velocity
         circ_buff->buffer[i].position.x += circ_buff->buffer[i].velocity.x;
-        circ_buff->buffer[i].velocity.y += 0.2f; // downwards
+        // circ_buff->buffer[i].velocity.y += 0.2f; // downwards
+        circ_buff->buffer[i].velocity.y -= 0.2f; // upwards
         circ_buff->buffer[i].position.y += circ_buff->buffer[i].velocity.y;
 
         Vector2 center {circ_buff->buffer[i].position};
@@ -103,7 +104,7 @@ struct CircularBuffer
             (
              circ_buff->buffer[i].position, 
              12.0f,
-             BLUE
+             PINK
              // circ_buff->buffer[i].radius, 
              // circ_buff->buffer[i].color
             );

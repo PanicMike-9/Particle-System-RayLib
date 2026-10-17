@@ -15,7 +15,7 @@ struct Particle
     float radius {10.0f};
     float life_time;
 
-    Color color {PINK};
+    Color color {VIOLET};
 
     bool alive {true};
 };
@@ -53,6 +53,10 @@ struct CircularBuffer
         new_particle->alive     = true;
         new_particle->life_time = 0.0f;
 
+        new_particle->radius = 10.0f;
+        new_particle->color = VIOLET;
+        new_particle->color.a = 1;
+
         float speed {static_cast<float>((rand() % 10) / 5.0f)};
 
         float direction {static_cast<float>(rand() % 360)};
@@ -62,8 +66,7 @@ struct CircularBuffer
     }
 }
 
-[[gnu::always_inline]] inline static void update_particles(CircularBuffer* circ_buff, 
-        const int scr_w, const int scr_h)
+[[gnu::always_inline]] inline static void update_particles(CircularBuffer* circ_buff, const int scr_w, const int scr_h)
 {
     for (int i {circ_buff->tail}; i != circ_buff->head; i = (i + 1) % MAX_PARTICLES)
     {
@@ -73,11 +76,31 @@ struct CircularBuffer
         circ_buff->buffer[i].position.x += circ_buff->buffer[i].velocity.x;
         // circ_buff->buffer[i].velocity.y += 0.2f; // downwards
         circ_buff->buffer[i].velocity.y -= 0.2f; // upwards
-        circ_buff->buffer[i].position.y += circ_buff->buffer[i].velocity.y;
+        // circ_buff->buffer[i].position.y += circ_buff->buffer[i].velocity.y;
+        circ_buff->buffer[i].position.x += circ_buff->buffer[i].velocity.y;
+
+        // change radius & color (smoke like behavior)
+        circ_buff->buffer[i].radius -= 0.01f;
+
+        // circ_buff->buffer[i].color.r += (rand() % 3);
+        // circ_buff->buffer[i].color.b += (rand() % 6);
+        circ_buff->buffer[i].color.b += 4;
+        circ_buff->buffer[i].color.r += 2;
+        circ_buff->buffer[i].color.g -= 3;
+
+        // decrease alpha to create fade
+        circ_buff->buffer[i].color.a -= 4;
+
+        // kill particles, when alpha is trasparent
+        if (circ_buff->buffer[i].color.a < 4)
+        {
+            circ_buff->buffer[i].alive = false;
+        }
 
         Vector2 center {circ_buff->buffer[i].position};
-        float radius {circ_buff->buffer[i].radius};
+        float radius   {circ_buff->buffer[i].radius};
 
+        // kill particles, when outside screen
         if ((center.x < -radius) || (center.x > (scr_w + radius)) ||
             (center.y < -radius) || (center.y > (scr_h + radius)))
         {
@@ -103,10 +126,8 @@ struct CircularBuffer
             DrawCircleV
             (
              circ_buff->buffer[i].position, 
-             12.0f,
-             PINK
-             // circ_buff->buffer[i].radius, 
-             // circ_buff->buffer[i].color
+             circ_buff->buffer[i].radius, 
+             circ_buff->buffer[i].color
             );
         }
     }

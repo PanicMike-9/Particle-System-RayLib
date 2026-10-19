@@ -54,7 +54,7 @@ struct CircularBuffer
         new_particle->life_time = 0.0f;
 
         new_particle->radius = 10.0f;
-        new_particle->color = VIOLET;
+        new_particle->color = GREEN;
         new_particle->color.a = 1;
 
         float speed {static_cast<float>((rand() % 10) / 5.0f)};
@@ -76,17 +76,24 @@ struct CircularBuffer
         circ_buff->buffer[i].position.x += circ_buff->buffer[i].velocity.x;
         // circ_buff->buffer[i].velocity.y += 0.2f; // downwards
         circ_buff->buffer[i].velocity.y -= 0.2f; // upwards
-        // circ_buff->buffer[i].position.y += circ_buff->buffer[i].velocity.y;
-        circ_buff->buffer[i].position.x += circ_buff->buffer[i].velocity.y;
+
+        // backwards in x
+        // circ_buff->buffer[i].position.x += circ_buff->buffer[i].velocity.y;
+
+        // forward in x
+        // circ_buff->buffer[i].position.x -= circ_buff->buffer[i].velocity.y;
+
+        // diagonal
+        circ_buff->buffer[i].position.y += circ_buff->buffer[i].velocity.x;
 
         // change radius & color (smoke like behavior)
         circ_buff->buffer[i].radius -= 0.01f;
 
-        // circ_buff->buffer[i].color.r += (rand() % 3);
+        // circ_buff->buffer[i].color.r -= (rand() % 3);
         // circ_buff->buffer[i].color.b += (rand() % 6);
-        circ_buff->buffer[i].color.b += 4;
-        circ_buff->buffer[i].color.r += 2;
-        circ_buff->buffer[i].color.g -= 3;
+        circ_buff->buffer[i].color.b -= 3;
+        circ_buff->buffer[i].color.r -= 2;
+        circ_buff->buffer[i].color.g += 1;
 
         // decrease alpha to create fade
         circ_buff->buffer[i].color.a -= 4;

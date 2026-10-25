@@ -89,11 +89,7 @@ struct CircularBuffer
         // change radius & color (smoke like behavior)
         circ_buff->buffer[i].radius -= 0.01f;
 
-        // circ_buff->buffer[i].color.r -= (rand() % 3);
-        // circ_buff->buffer[i].color.b += (rand() % 6);
-        circ_buff->buffer[i].color.b -= 3;
-        circ_buff->buffer[i].color.r -= 2;
-        circ_buff->buffer[i].color.g += 1;
+        circ_buff->buffer[i].color.b += 3;
 
         // decrease alpha to create fade
         circ_buff->buffer[i].color.a -= 4;
